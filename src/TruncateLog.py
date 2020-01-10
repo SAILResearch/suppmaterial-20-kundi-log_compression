@@ -133,7 +133,7 @@ class TruncateLog:
             subprocess.Popen(cmd, shell=True).wait()
             # Calculate #characters in log block
             num_chars = subprocess.check_output("wc -c %s_temp | awk '{print $1}'" % new_file_name, shell=True).decode('utf-8').strip()
-            cmd = "cat %s_temp | python3 TokSplitTextNumAndMax8Num.py > %s && rm %s_temp" % (new_file_name, new_file_name, new_file_name)
+            cmd = "cat %s_temp | python3 Tokenizer.py > %s && rm %s_temp" % (new_file_name, new_file_name, new_file_name)
             subprocess.Popen(cmd, shell=True).wait()
             # Calculate #tokens
             num_tokens = subprocess.check_output("wc -w %s | awk '{print $1}'" % new_file_name, shell=True).decode('utf-8').strip()
@@ -175,8 +175,8 @@ class TruncateLog:
 
         setting = self.settings
 
-        output_dir = os.path.sep.join([os.path.realpath('.'), '../temp', os.path.basename(setting['log_file']).split('.')[0]])
-        log_path = setting['log_file']
+        output_dir = os.path.sep.join([os.path.realpath('.'), '../temp', os.path.basename(setting['file_path']).split('.')[0]])
+        log_path = setting['file_path']
 
         if os.path.isdir(output_dir):
             shutil.rmtree(output_dir)

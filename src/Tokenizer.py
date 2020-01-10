@@ -1,7 +1,5 @@
 import sys
 import nltk
-import os
-from itertools import islice
 
 replace_dic = {' ': '<spa>', '\t': '<tab>'}
 
@@ -15,6 +13,7 @@ def getMaxEightNumLimit(s):
             # If length lower than 8 characters, we don't split
             return [s]
         else:
+            # Pre-process, if a string size > 8, we split it
             temp_len = len(s)
             temp_digit_list = []
             for i in range(0, int(temp_len / 8)):
@@ -37,7 +36,7 @@ def splitTextAndNum(s):
     if len(str_list) == 1:
         return [s]
 
-    for i in range(0,len(str_list)-1):
+    for i in range(0, len(str_list)-1):
 
         x = str_list[i]
         x_next = str_list[i+1]
@@ -66,12 +65,10 @@ def splitTextAndNum(s):
 
 for line in sys.stdin:
     piece = line
-        # Split by symbols, keep space
+    # Split by symbols, keep space
     tokenizer = nltk.tokenize.RegexpTokenizer("[^A-Za-z0-9]|[A-Za-z0-9]+")
 
     piece_array = list(tokenizer.tokenize(piece.lower()))
-
-    # Preprocess, if a string size > 8, we split it
 
     piece_array_new = []
 

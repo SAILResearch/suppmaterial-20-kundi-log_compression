@@ -16,7 +16,7 @@ class CompareStaticDynamic:
         elif settings:
             # dataframe will be added after parse() is called
             self.settings = settings
-            self.file = settings['log_file']
+            self.file = settings['file_path']
 
     def load_file(self, file):
         return pd.read_csv(file, low_memory=False)

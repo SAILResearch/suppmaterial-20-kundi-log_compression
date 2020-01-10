@@ -9,7 +9,7 @@ from Compare_Size_Static_Dynamic import CompareStaticDynamic
 benchmark_settings = {
     # We used an industrial access log in our study. Therefore, we cannot provide it.
     'Firewall': {
-        'log_file': '../logs/FirewallLog10M.log',
+        'file_path': '../data/FirewallLog1G.log',
         'log_format': '<Date> <Time>  <Level> <IP>  :<Month> <Day> <Time2> <Component1> <Component2>: <Content>',
         'regex': [r'(\d+\.){3}\d+(/\d+)?'],
         'st': 0.5,
@@ -17,7 +17,7 @@ benchmark_settings = {
     },
 
     'HDFS': {
-        'log_file': '../logs/HDFS10M.log',
+        'file_path': '../data/HDFS1G.log',
         'log_format': '<Date> <Time> <Pid> <Level> <Component>: <Content>',
         'regex': [r'blk_-?\d+', r'(\d+\.){3}\d+(:\d+)?'],
         'st': 0.5,
@@ -25,7 +25,7 @@ benchmark_settings = {
         },
 
     'LinuxSyslog': {
-        'log_file': '../logs/LinuxSysLog10M.log',
+        'file_path': '../data/LinuxSysLog1G.log',
         'log_format': '<Month> <Date> <Time> <Level> <Component>(\[<PID>\])?: <Content>',
         'regex': [r'(\d+\.){3}\d+', r'\d{2}:\d{2}:\d{2}'],
         'st': 0.39,
@@ -33,7 +33,7 @@ benchmark_settings = {
     },
 
     'Thunderbird': {
-        'log_file': '../logs/Thunderbird10M.log',
+        'file_path': '../data/Thunderbird1G.log',
         'log_format': '<Label> <Timestamp> <Date> <User> <Month> <Day> <Time> <Location> <Component>(\[<PID>\])?: <Content>',
         'regex': [r'(\d+\.){3}\d+'],
         'st': 0.5,
@@ -41,7 +41,7 @@ benchmark_settings = {
         },
 
     'Liberty': {
-        'log_file': '../logs/Liberty10M.log',
+        'file_path': '../data/Liberty1G.log',
         'log_format': '- <Timestamp> <Date> <User> <Month> <Day> <Time> <Location> <Content>',
         'regex': [r'(\d+\.){3}\d+', r'0x.*?\s', r'IRQ(\d+) -> (\d+):(\d+)', r'(.*?): message-id=<(\d+)\.(.*?)@'],
         'st': 0.5,
@@ -49,7 +49,7 @@ benchmark_settings = {
     },
 
     'Spark': {
-        'log_file': '../logs/Spark10M.log',
+        'file_path': '../data/Spark1G.log',
         'log_format': '<Date> <Time> <Level> <Component>: <Content>',
         'regex': [r'(\d+\.){3}\d+(:\d+)?'],
         'st': 0.5,
@@ -57,7 +57,7 @@ benchmark_settings = {
     },
 
     'Spirit': {
-        'log_file': '../logs/Spirit10M.log',
+        'file_path': '../data/Spirit1G.log',
         'log_format': '<Label> <TimeStamp> <Date> <User> <Month> <Day> <Time> <UserGroup> <Component>(\[<PID>\])?(:)? <Content>',
         'regex': [r'0x.*?\s', r'(\d+\.){3}\d+(:\d+)?', r'#(\d+)#', r'<(\d{14})\.(.*?)\@', r'(\d+)-(\d+)', r'(\d+)kB', r'\d{2}:\d{2}:\d{2}'],
         'st': 0.5,
@@ -65,12 +65,21 @@ benchmark_settings = {
     },
 
     'Windows': {
-        'log_file': '../logs/Windows10M.log',
+        'file_path': '../data/Windows1G.log',
         'log_format': '<Date> <Time>, <Level>                  <Component>    <Content>',
         'regex': [r'0x.*?\s'],
         'st': 0.7,
         'depth': 5
     },
+    # The settings are prepared for log data not for NL data
+    'Gutenberg': {
+        'file_path': '../data/Gutenberg1G.txt'
+    },
+
+    'Wiki': {
+        'file_path': '../data/Wiki1G.txt'
+    }
+
 
 }
 
@@ -81,15 +90,21 @@ if __name__ == '__main__':
     if platform.system() != 'Linux':
         raise SystemError('[ERROR] Unfortunately, only Linux system is supported in current version.')
 
-    # Usage:
-    # nsample: how many chunks you want here
-    # size: how many Kb you want
-
     # Min size from 2^0 = 1Kb, to 2^19 = 512MB
+    block_size_pow_min = 0
+    block_size_pow_max = 19
 
-    min = 0
-    max = 19
+    # Set configurations
+    # Entropy: isEntropy = True, others equal to False
+    # Compression: isCompress = True, others equal to False
+    # Compression levels: isSetCompressLevel = True, others equal to False
+    # Check Static vs Dynamic information: isParseLog = True, others equal to False
+    isEntropy = False
+    isCompress = False
+    isSetCompressLevel = False
+    isParseLog = True
 
+    # Set result output directory
     output_dir = '../res'
     if not os.path.isdir(output_dir):
         os.makedirs(output_dir)
@@ -100,16 +115,10 @@ if __name__ == '__main__':
     # This file provides threshold for repetition.
     # If below this threshold, the file will be copied X times then compressed
     # Then we calculate the average compression/decompression time
-    # This is used when compression/decompression time cannot be well-captured (for small-sized logs)
+    # This is used when compression/decompression time cannot be well-captured (for small-sized data)
     # If such file is not provided, the file will not be repeated
 
     threshold_file = '../thresh/threshold.csv'
-
-    # Shuffle the file?
-    isEntropy = True
-    isCompress = False
-    isSetCompressLevel = False
-    isParseLog = False
 
     if isSetCompressLevel:
         output_file_name = 'comp_lv.csv'
@@ -125,6 +134,7 @@ if __name__ == '__main__':
         os.remove(out_path)
 
     if isParseLog:
+        allowed_keys = [x for x in benchmark_settings.keys() if x not in ['Gutenberg', 'Wiki']]
 
         if inp in benchmark_settings.keys():
             obj = CompareStaticDynamic(settings=benchmark_settings[inp])
@@ -132,13 +142,13 @@ if __name__ == '__main__':
             obj.compare()
 
         else:
-            raise AttributeError('[ERROR] Wrong input, only the following inputs are supported:\n' + ','.join(benchmark_settings.keys()))
+            raise AttributeError('[ERROR] Wrong input, only the following inputs are supported:\n' + ','.join(allowed_keys))
 
     else:
 
-        file_path = os.path.abspath(benchmark_settings[inp].get('log_file'))
+        file_path = os.path.abspath(benchmark_settings[inp].get('file_path'))
 
-        for i in range(min, max+1):
+        for i in range(block_size_pow_min, block_size_pow_max + 1):
 
             obj = TruncateLog(file=file_path, nsample=10, size_pow=i,
                               out_path=out_path, threshold_file=threshold_file,
