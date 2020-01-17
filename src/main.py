@@ -100,9 +100,9 @@ if __name__ == '__main__':
     # Compression levels: isSetCompressLevel = True, others equal to False
     # Check Static vs Dynamic information: isParseLog = True, others equal to False
     isEntropy = False
-    isCompress = False
+    isCompress = True
     isSetCompressLevel = False
-    isParseLog = True
+    isParseLog = False
 
     # Set result output directory
     output_dir = '../res'
@@ -147,6 +147,9 @@ if __name__ == '__main__':
     else:
 
         file_path = os.path.abspath(benchmark_settings[inp].get('file_path'))
+
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError("File not found at: %s" % os.path.abspath(file_path))
 
         for i in range(block_size_pow_min, block_size_pow_max + 1):
 
