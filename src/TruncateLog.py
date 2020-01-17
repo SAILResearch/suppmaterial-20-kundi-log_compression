@@ -306,12 +306,16 @@ class TruncateLog:
             #Compressors
             for compressor in CompressorsEnum:
 
+                # If threshold file not provided, set to 1 by default
+                repeat = 1
+
                 if tup_list is not None and not isSetCompressLevel:
                     # Repeat X times to capture the compression/decompression speed of small files
-                    repeat = self.UpdateRepeat(compressor, tup_list)
-                else:
-                    # If threshold file not provided, set to 1 by default
-                    repeat = 1
+                    try:
+                        repeat = self.UpdateRepeat(compressor, tup_list)
+                    except UnboundLocalError:
+                        # If not defined
+                        pass
 
                 for i in range(0, self.nsample):
                     random_num = random.randint(lower_bound, upper_bound)
