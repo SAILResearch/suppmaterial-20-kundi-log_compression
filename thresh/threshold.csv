@@ -1,7 +1,4 @@
 FileName,Compressor,Pow
-AccessLog,BWT,15
-AccessLog,LZ77,17
-AccessLog,PPMD,15
 FirewallLog,BWT,16
 FirewallLog,LZ77,18
 FirewallLog,PPMD,15

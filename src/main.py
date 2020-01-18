@@ -97,7 +97,7 @@ if __name__ == '__main__':
     # Set configurations
     # Entropy: isEntropy = True, others equal to False
     # Compression: isCompress = True, others equal to False
-    # Compression levels: isSetCompressLevel = True, others equal to False
+    # Compression levels: isCompress = True, isSetCompressLevel = True, others equal to False
     # Check Static vs Dynamic information: isParseLog = True, others equal to False
     isEntropy = False
     isCompress = True
