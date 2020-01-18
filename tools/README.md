@@ -14,7 +14,7 @@ We host these tools to facilitate the reproducibility of this research work.
 | p7zip         | v9.20         | https://sourceforge.net/projects/p7zip/files/p7zip/                                |
 | quickLZ       | v1.5.0        | http://www.quicklz.com/                                                            |
 | sr2           | single version| http://mattmahoney.net/dc/index.html#sr2                                           |
-| bzip2         | v1.0.6        | ftp://sourceware.org/pub/bzip2/                                                    |
+| bzip2         | v1.0.6        | https://sourceware.org/pub/bzip2/                                                  |
 | szip          | v1.12         | http://www.compressconsult.com/szip/#download                                      |
 | ocamyd        | v1.65         | https://web.archive.org/web/20091026235047/http://de.geocities.com/ocamyd/         |
 | zpaq          | v7.15         | http://mattmahoney.net/dc/zpaq.html                                                |
@@ -23,6 +23,6 @@ We host these tools to facilitate the reproducibility of this research work.
 ## Entropy analysis tools:
 
 This folder is an appendix with the entropy analysis tools used in this research work.
-KenLM [https://kheafield.com/code/kenlm/] and SRILM [http://www.speech.sri.com/projects/srilm/] are used to calculate entropy from target data.
+[KenLM](https://kheafield.com/code/kenlm/) and [SRILM](http://www.speech.sri.com/projects/srilm/) are used to calculate entropy from target data.
 We do not provide an redistribution of SRILM due to licence restrictions, but you can download it through [this page.](http://www.speech.sri.com/projects/srilm/download.html)
 Note that these tools need to be pre-installed before running entropy evaluation in this replication package.
