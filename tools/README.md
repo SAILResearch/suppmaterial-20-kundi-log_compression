@@ -1,6 +1,6 @@
 # Tools for data compression and entropy analysis
 
-##Compression tools:
+## Compression tools:
 
 This folder is an appendix with the compression tools used in this research work. All of these tools are allowed to be redistributed for research and non-commercial usages.
 
