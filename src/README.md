@@ -1,10 +1,10 @@
 # Source code
 This section is the implementation of our research work.
 
-##Set-up
+## Set-up
 Before start, please make sure you pre-install the [compression & entropy analysis tools](../tools/README.md).
 
-##Configurations
+## Configurations
 Define the following configurations in [main.py](main.py):
     
     - Setup block size range: 
@@ -18,7 +18,7 @@ Define the following configurations in [main.py](main.py):
          # Compression levels: isCompress = True, isSetCompressLevel = True, others equal to False
          # Check Static vs Dynamic information: isParseLog = True, others equal to False
 
-##Test
+## Test
 We use python3.6 as the default python version.
 
     python main.py ARGUMENT
