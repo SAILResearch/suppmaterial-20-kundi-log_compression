@@ -2,7 +2,7 @@
 This section is the implementation of our research work.
 
 ## Set-up
-Before start, please make sure you pre-install the [compression & entropy analysis tools](../tools/README.md).
+Before start, please make sure you pre-install the [compression & entropy analysis tools](../tools/).
 
 ## Configurations
 Define the following configurations in [main.py](main.py):
